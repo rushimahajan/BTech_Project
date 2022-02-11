@@ -280,8 +280,8 @@ class FTransEModule(BaseModule):
         h_r_T = torch.transpose(h_r, 0, 1)
         h_T = torch.transpose(head_embed, 0, 1)
         
-        h_r_T_dot_t = torch.dot(h_r_T, tail_embed)
-        h_T_dot_t_r = torch.dot(h_T, t_r)
+        h_r_T_dot_t = torch.matmul(h_r_T, tail_embed)
+        h_T_dot_t_r = torch.matmul(h_T, t_r)
         
         return torch.norm(h_r_T_dot_t + h_T_dot_t_r, p=self.p, dim=-1).view(shape)
 
