@@ -285,7 +285,7 @@ class FTransEModule(BaseModule):
         print(h_r_T_dot_t.size())
         print(h_T_dot_t_r.size())
         print(shape)
-        return torch.norm(h_r_T_dot_t + h_T_dot_t_r, p=self.p, dim=-1).view(shape)
+        return torch.norm(h_r_T_dot_t + h_T_dot_t_r, p=self.p, dim=-1)
 
     def dist(self, head, tail, rela):
         return self.forward(head, tail, rela)
