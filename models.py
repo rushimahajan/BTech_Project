@@ -274,18 +274,18 @@ class FTransEModule(BaseModule):
         tail_embed = F.normalize(self.ent_embed(tail),2,-1)
         rela_embed = self.rel_embed(rela)
         
-        h_r = head_embed + rela_embed
-        t_r = tail_embed - rela_embed
+        h_r = head + rela
+        t_r = tail - rela
         
         h_r_T = torch.transpose(h_r, 0, 1)
-        h_T = torch.transpose(head_embed, 0, 1)
+        h_T = torch.transpose(head, 0, 1)
         
-        h_r_T_dot_t = torch.matmul(h_r_T, tail_embed)
+        h_r_T_dot_t = torch.matmul(h_r_T, tail)
         h_T_dot_t_r = torch.matmul(h_T, t_r)
         print(h_r_T_dot_t.size())
         print(h_T_dot_t_r.size())
         print(shape)
-        return torch.norm(h_r_T_dot_t + h_T_dot_t_r, p=self.p, dim=-1)
+        return torch.norm(h_r_T_dot_t + h_T_dot_t_r, p=self.p, dim=-1).view(shape)
 
     def dist(self, head, tail, rela):
         return self.forward(head, tail, rela)
