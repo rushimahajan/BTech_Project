@@ -11,7 +11,7 @@ from base_model import BaseModel
 
 parser = argparse.ArgumentParser(description="Parser for Knowledge Graph Embedding")
 parser.add_argument('--task_dir', type=str, default='../KG_Data/FB15K', help='the directory to dataset')
-parser.add_argument('--model', type=str, default='ComplEx',  help='scoring function, support [TransE, TransD, TransH, DistMult, ComplEx, SimplE]')
+parser.add_argument('--model', type=str, default='FTransE',  help='scoring function, support [TransE, TransD, TransH, DistMult, ComplEx, SimplE, FTransE]')
 parser.add_argument('--sample', type=str, default='unif', help='sampling method from the cache')
 parser.add_argument('--update', type=str, default='IS', help='cache update method')
 parser.add_argument('--remove', type=bool, default=False, help='whether to remove false negative in cache periodically')

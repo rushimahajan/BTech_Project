@@ -7,7 +7,7 @@ import logging
 import os
 import time
 from torch.optim import Adam, SGD, Adagrad
-from models import TransDModule, TransEModule, TransHModule, DistMultModule, ComplExModule, SimplEModule
+from models import TransDModule, TransEModule, TransHModule, DistMultModule, ComplExModule, SimplEModule, FTransEModule
 
 class BaseModel(object):
     def __init__(self, n_ent, n_rel, args):
@@ -23,6 +23,8 @@ class BaseModel(object):
             self.model = ComplExModule(n_ent, n_rel, args)
         elif args.model == 'SimplE':
             self.model = SimplEModule(n_ent, n_rel, args)
+        elif args.model == 'FTransE':
+            self.model = FTransEModule(n_ent, n_rel, args)
         else:
             raise NotImplementedError
 

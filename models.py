@@ -258,3 +258,38 @@ class SimplEModule(BaseModule):
     def prob_logit(self, head, tail, rela):
         return self.forward(head, tail, rela)/self.temp
 
+class FTransEModule(BaseModule):
+    def __init__(self, n_ent, n_rel, args):
+        super(FTransEModule, self).__init__(n_ent, n_rel, args)
+        self.rel_embed = nn.Embedding(n_rel, args.hidden_dim)
+        self.ent_embed = nn.Embedding(n_ent, args.hidden_dim)
+        self.init_weight()
+
+    def forward(self, head, tail, rela):
+        shape = head.size()
+        head = head.contiguous().view(-1)
+        tail = tail.contiguous().view(-1)
+        rela = rela.contiguous().view(-1)
+        head_embed = F.normalize(self.ent_embed(head),2,-1)
+        tail_embed = F.normalize(self.ent_embed(tail),2,-1)
+        rela_embed = self.rel_embed(rela)
+        
+        h_r = head_embed + rela_embed
+        t_r = tail_embed - rela_embed
+        
+        h_r_T = torch.transpose(h_r, 0, 1)
+        h_T = torch.transpose(h, 0, 1)
+        
+        h_r_T_dot_t = torch.dot(h_r_T, tail_embed)
+        h_T_dot_t_r = torch.dot(h_T, t_r)
+        
+        return torch.norm(h_r_T_dot_t + h_T_dot_t_r, p=self.p, dim=-1).view(shape)
+
+    def dist(self, head, tail, rela):
+        return self.forward(head, tail, rela)
+
+    def score(self, head, tail, rela):
+        return self.forward(head, tail, rela)
+
+    def prob_logit(self, head, tail, rela):
+        return -self.forward(head, tail, rela) / self.temp
