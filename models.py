@@ -278,7 +278,7 @@ class FTransEModule(BaseModule):
         t_r = tail_embed - rela_embed
         
         h_r_T = torch.transpose(h_r, 0, 1)
-        h_T = torch.transpose(h, 0, 1)
+        h_T = torch.transpose(head_embed, 0, 1)
         
         h_r_T_dot_t = torch.dot(h_r_T, tail_embed)
         h_T_dot_t_r = torch.dot(h_T, t_r)
